@@ -1,24 +1,24 @@
-import TestCard from "@/components/TestCard";
+import BookCard from "@/components/BookCard";
+import HeroSection from "@/components/HeroSection";
+import { sampleBooks } from "@/lib/constants";
 
 export default function Home() {
     return (
-        <section className="min-h-screen min-w-screen bg-amber-50 ">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-                <TestCard
-                    title="Testing Card 1"
-                    desc="This is a simple test card."
-                    action="Click me!"
-                    content="This is the content of the test card."
-                    footer="This is the footer of the test card."
-                />
+        <section className="min-h-screen bg-[var(--bg-primary)] py-10">
+            <div className="wrapper space-y-16">
+                <HeroSection />
 
-                <TestCard
-                    title="Testing Card 2"
-                    desc="This is a simple test card."
-                    action="Click me!"
-                    content="This is the content of the test card."
-                    footer="This is the footer of the test card."
-                />
+                <div className="library-books-grid">
+                    {sampleBooks.map((book) => (
+                        <BookCard
+                            key={book._id}
+                            title={book.title}
+                            author={book.author}
+                            coverURL={book.coverURL}
+                            slug={book.slug}
+                        />
+                    ))}
+                </div>
             </div>
         </section>
     );
