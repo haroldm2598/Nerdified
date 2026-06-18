@@ -19,14 +19,6 @@ export default function Home() {
                     content="This is the content of the test card."
                     footer="This is the footer of the test card."
                 />
-
-                <TestCard
-                    title="Testing Card 3"
-                    desc="This is a simple test card."
-                    action="Click me!"
-                    content="This is the content of the test card."
-                    footer="This is the footer of the test card."
-                />
             </div>
         </section>
     );
