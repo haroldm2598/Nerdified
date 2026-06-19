@@ -13,7 +13,7 @@ import {
 
 const navItems = [
     { label: "Library", href: "/" },
-    { label: "Add New", href: "/new" },
+    { label: "Add New", href: "/books/new" },
 ];
 
 const Navbar = () => {
