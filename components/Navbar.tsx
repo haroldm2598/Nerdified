@@ -3,6 +3,13 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+    SignInButton,
+    SignUpButton,
+    Show,
+    UserButton,
+    useUser,
+} from "@clerk/nextjs";
 
 const navItems = [
     { label: "Library", href: "/" },
@@ -11,6 +18,8 @@ const navItems = [
 
 const Navbar = () => {
     const pathName = usePathname();
+    const { user } = useUser();
+
     return (
         <header className="w-full fixed z-50 bg-(--bg-primary)">
             <div className="wrapper navbar-height py-4 flex justify-between items-center">
@@ -45,6 +54,30 @@ const Navbar = () => {
                             </Link>
                         );
                     })}
+
+                    <Show when="signed-out">
+                        <div className="flex gap-3 items-center">
+                            <SignInButton>
+                                <button className="rounded-full border border-slate-900/10 bg-white px-4 py-2 text-sm font-medium text-slate-950 shadow-sm transition hover:bg-slate-50">
+                                    Sign in
+                                </button>
+                            </SignInButton>
+                            <SignUpButton>
+                                <button className="rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800">
+                                    Sign up
+                                </button>
+                            </SignUpButton>
+                        </div>
+                    </Show>
+
+                    <Show when="signed-in">
+                        <UserButton />
+                        {user?.firstName && (
+                            <Link href="/" className="nav-user-name">
+                                {user.firstName}
+                            </Link>
+                        )}
+                    </Show>
                 </nav>
             </div>
         </header>
