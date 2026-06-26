@@ -4,7 +4,9 @@ import * as React from "react";
 import {
     Controller,
     type Control,
+    type ControllerProps,
     type FieldPath,
+    type FieldPathValue,
     type FieldValues,
     type UseFormReturn,
 } from "react-hook-form";
@@ -28,8 +30,8 @@ function FormField<T extends FieldValues>({
 }: {
     control: Control<T>;
     name: FieldPath<T>;
-    defaultValue?: unknown;
-    render: (props: any) => React.ReactNode;
+    defaultValue?: FieldPathValue<T, FieldPath<T>>;
+    render: ControllerProps<T, FieldPath<T>>["render"];
 }) {
     return (
         <Controller
