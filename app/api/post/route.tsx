@@ -6,7 +6,7 @@ export async function GET() {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
 
-    const { data, error } = await supabase.from("Post").select("*");
+    const { data, error } = await supabase.from("post").select("*");
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
