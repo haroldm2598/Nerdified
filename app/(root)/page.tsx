@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export default async function Home() {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
-    const { data: todos } = await supabase.from("todos").select();
+    const { data: post } = await supabase.from("post").select();
 
     return (
         <section className="min-h-screen bg-[var(--bg-primary)] py-10">
@@ -28,12 +28,12 @@ export default async function Home() {
 
                 <div className="mt-8 rounded-lg border border-white/10 bg-white/5 p-4">
                     <h2 className="mb-3 text-lg font-semibold">
-                        Supabase todos
+                        Supabase post
                     </h2>
                     <ul className="space-y-2">
-                        {todos?.map((todo) => (
+                        {post?.map((todo) => (
                             <li key={todo.id} className="text-sm text-gray-300">
-                                {todo.name}
+                                {todo.title}
                             </li>
                         ))}
                     </ul>

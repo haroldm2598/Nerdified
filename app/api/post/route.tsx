@@ -7,7 +7,6 @@ export async function GET() {
     const supabase = createClient(cookieStore);
 
     const { data, error } = await supabase.from("Post").select("*");
-    console.log(data);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

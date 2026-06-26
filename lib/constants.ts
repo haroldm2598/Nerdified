@@ -70,10 +70,10 @@ export const sampleBooks = [
     },
     {
         _id: "9",
-        title: "How to stop worrrying and start living",
-        author: "Dale Carnegie",
-        slug: "how-to-stop-worrying-disliked",
-        coverURL: "https://covers.openlibrary.org/b/id/10829208-L.jpg",
+        title: "The Courage to Be Disliked",
+        author: "Fumitake Koga & Ichiro Kishimi",
+        slug: "the-courage-to-be-disliked",
+        coverURL: "https://covers.openlibrary.org/b/isbn/9781501197274-L.jpg",
         coverColor: "#f8f4e9",
     },
     {
