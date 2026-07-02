@@ -1,11 +1,14 @@
-import { testContent } from "@/lib/api/testContent";
+// import { testContent } from "@/lib/api/testContent";
+
+import { prisma } from "@/lib/db";
 
 const page = async () => {
-    const postContent = await testContent();
+    // const postContent = await testContent();
+    const posts = await prisma.post.findMany();
 
     return (
         <div className="wrapper container">
-            {postContent.data.map((post: any) => (
+            {/* {postContent.data.map((post: any) => (
                 <div key={post.id} className="flex items-center gap-2">
                     <h2 className="text-xl font-semibold">
                         Title: {post.title}
@@ -14,7 +17,19 @@ const page = async () => {
                         content: {post.content}
                     </p>
                 </div>
-            ))}
+            ))} */}
+            {posts.map((post) => {
+                return (
+                    <div key={post.id} className="flex items-center gap-2">
+                        <h2 className="text-xl font-semibold">
+                            Title: {post.title}
+                        </h2>
+                        <p className="text-lg font-medium">
+                            content: {post.content}
+                        </p>
+                    </div>
+                );
+            })}
         </div>
     );
 };
