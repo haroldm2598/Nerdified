@@ -1,3 +1,5 @@
+import UploadForm from "@/components/UploadForm";
+
 const page = () => {
     return (
         <main className="wrapper container">
@@ -5,6 +7,8 @@ const page = () => {
                 <section className="flex flex-col gap-5">
                     <h1 className="page-title-xl">Add a New Book</h1>
                 </section>
+
+                <UploadForm />
             </div>
         </main>
     );
