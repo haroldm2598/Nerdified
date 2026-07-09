@@ -20,10 +20,10 @@ model Post {
 }
 
 model Book {
-  id             String   @id @default(uuid())
+  id             String         @id @default(uuid())
   clerkId        String
   title          String
-  slug           String   @unique
+  slug           String         @unique
   author         String
   persona        String?
   fileURL        String
@@ -32,8 +32,40 @@ model Book {
   coverBlobKey   String?
   fileSize       BigInt
   totalSegments  Int
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  segments       BookSegment[]
+  voiceSessions  VoiceSession[]
 
   @@map("books")
+}
+
+model BookSegment {
+  id            String   @id @default(uuid())
+  clerkId       String
+  bookId        String
+  book          Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  content       String
+  segmentIndex  Int
+  pageNumber    Int?
+  wordCount     Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("book_segments")
+}
+
+model VoiceSession {
+  id                  String    @id @default(uuid())
+  clerkId             String
+  bookId              String
+  book                Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  startedAt           DateTime
+  endedAt             DateTime?
+  durationSeconds     Int
+  billingPeriodStart  DateTime
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@map("voice_sessions")
 }

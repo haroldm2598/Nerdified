@@ -141,6 +141,25 @@ export const voiceCategories = {
 // Default voice
 export const DEFAULT_VOICE = "rachel";
 
+export const voiceGroups = [
+    {
+        label: "Male Voices",
+        options: voiceCategories.male.map((key) => ({
+            id: voiceOptions[key].id,
+            title: voiceOptions[key].name,
+            description: voiceOptions[key].description,
+        })),
+    },
+    {
+        label: "Female Voices",
+        options: voiceCategories.female.map((key) => ({
+            id: voiceOptions[key].id,
+            title: voiceOptions[key].name,
+            description: voiceOptions[key].description,
+        })),
+    },
+];
+
 // ElevenLabs voice settings optimized for conversational AI
 export const VOICE_SETTINGS = {
     stability: 0.45, // Lower for more emotional, dynamic delivery (0.30-0.50 is natural)
