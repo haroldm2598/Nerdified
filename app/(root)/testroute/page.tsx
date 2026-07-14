@@ -10,19 +10,18 @@ interface PostProps {
 
 const page = () => {
     const [posts, setPosts] = useState<PostProps[]>([]);
-    const [limit, setLimit] = useState<number>(5);
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(`/api/post`);
             const post = await response.json();
 
-            setPosts(post.data);
-            console.log("From serverState:", post.data);
+            setPosts(post);
+            console.log("From serverState:", post);
         };
 
         fetchData();
-    }, [limit]);
+    }, []);
 
     useEffect(() => {
         console.log("From useState:", posts);
