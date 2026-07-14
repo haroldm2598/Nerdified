@@ -1,35 +1,22 @@
 import * as response from "@/utils/api-response";
 import * as service from "@/lib/service/post.service";
 
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-
+// Empty yung result * sa service lang pala ako may maling
 export async function GET() {
     try {
-        const posts = await prisma.post.findMany();
-
+        const posts = await service.getPosts();
         const serialized = JSON.parse(
             JSON.stringify(posts, (_, value) =>
                 typeof value === "bigint" ? value.toString() : value,
             ),
         );
 
-        return NextResponse.json({ data: serialized });
+        return response.ok(serialized);
     } catch (error) {
-        return NextResponse.json(
-            { error: (error as Error).message },
-            { status: 500 },
+        return response.serverError(
+            error instanceof Error
+                ? error.message
+                : "An internal server error occurred",
         );
     }
 }
-
-// Empty yung result
-// export async function GET() {
-//     try {
-//         const posts = await service.getPosts();
-
-//         return response.ok(posts);
-//     } catch (error) {
-//         return response.serverError();
-//     }
-// }
