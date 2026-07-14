@@ -1,23 +1,35 @@
-// import { testContent } from "@/lib/api/testContent";
+"use client";
 
-import { prisma } from "@/lib/db";
+import { useEffect, useState } from "react";
 
-const page = async () => {
-    // const postContent = await testContent();
-    const posts = await prisma.post.findMany();
+interface PostProps {
+    id: string;
+    title: string;
+    content: string;
+}
+
+const page = () => {
+    const [posts, setPosts] = useState<PostProps[]>([]);
+    const [limit, setLimit] = useState<number>(5);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(`/api/post`);
+            const post = await response.json();
+
+            setPosts(post.data);
+            console.log("From serverState:", post.data);
+        };
+
+        fetchData();
+    }, [limit]);
+
+    useEffect(() => {
+        console.log("From useState:", posts);
+    }, [posts]);
 
     return (
         <div className="wrapper container">
-            {/* {postContent.data.map((post: any) => (
-                <div key={post.id} className="flex items-center gap-2">
-                    <h2 className="text-xl font-semibold">
-                        Title: {post.title}
-                    </h2>
-                    <p className="text-lg font-medium">
-                        content: {post.content}
-                    </p>
-                </div>
-            ))} */}
             {posts.map((post) => {
                 return (
                     <div key={post.id} className="flex items-center gap-2">
