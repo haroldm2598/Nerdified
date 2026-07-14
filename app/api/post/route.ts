@@ -1,21 +1,8 @@
-// import { createClient } from "@/utils/supabase/server";
-// import { cookies } from "next/headers";
+import * as response from "@/utils/api-response";
+import * as service from "@/lib/service/post.service";
+
 import { NextResponse } from "next/server";
-
 import { prisma } from "@/lib/db";
-
-// export async function GET() {
-//     const cookieStore = await cookies();
-//     const supabase = createClient(cookieStore);
-
-//     const { data, error } = await supabase.from("post").select("*");
-
-//     if (error) {
-//         return NextResponse.json({ error: error.message }, { status: 500 });
-//     }
-
-//     return NextResponse.json({ data });
-// }
 
 export async function GET() {
     try {
@@ -35,3 +22,14 @@ export async function GET() {
         );
     }
 }
+
+// Empty yung result
+// export async function GET() {
+//     try {
+//         const posts = await service.getPosts();
+
+//         return response.ok(posts);
+//     } catch (error) {
+//         return response.serverError();
+//     }
+// }
