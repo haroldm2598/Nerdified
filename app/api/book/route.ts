@@ -1,6 +1,6 @@
-// import * as reponse from '@/utils/api-response'
-
-import { NextResponse } from "next/server";
+import * as response from "@/utils/api-response";
+import * as service from "@/lib/service/post.service";
+import { UploadFormSchema } from "@/lib/validations/upload.validation";
 
 // export async function GET() {
 //     try {
@@ -10,6 +10,18 @@ import { NextResponse } from "next/server";
 //     }
 // }
 
-export async function GET() {
-    return NextResponse.json({ message: "Hello from the API route!" });
+export async function POST(request: Request) {
+    try {
+        const body = await request.json();
+        const validated = UploadFormSchema.parse(body);
+        const bookCreated = await service.createBook(validated);
+
+        return response.created(bookCreated);
+    } catch (error) {
+        return response.serverError(
+            error instanceof Error
+                ? error.message
+                : "An internal server error occurred",
+        );
+    }
 }
