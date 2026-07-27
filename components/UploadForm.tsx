@@ -1,11 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { useForm, type ControllerRenderProps } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { UploadCloud, Image, X } from "lucide-react";
 import { Form } from "./ui/form";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
     UploadFormSchema,
     UploadFormValues,
@@ -25,7 +24,36 @@ const UploadForm = () => {
     const coverInputRef = React.useRef<HTMLInputElement>(null);
 
     const form = useForm<UploadFormValues>({
-        resolver: zodResolver(UploadFormSchema),
+        resolver: async (values) => {
+            const result = UploadFormSchema.safeParse(values);
+
+            if (result.success) {
+                return {
+                    values: result.data,
+                    errors: {},
+                };
+            }
+
+            const errors = result.error.issues.reduce<
+                Record<string, { type: string; message: string }>
+            >((acc, issue) => {
+                const path = issue.path.join(".");
+
+                if (path) {
+                    acc[path] = {
+                        type: issue.code,
+                        message: issue.message,
+                    };
+                }
+
+                return acc;
+            }, {});
+
+            return {
+                values: {},
+                errors,
+            };
+        },
         defaultValues: {
             pdfFile: undefined,
             coverImage: undefined,
