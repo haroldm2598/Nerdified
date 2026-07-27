@@ -33,7 +33,8 @@ const UploadForm = () => {
             author: "",
             voice: DEFAULT_VOICE,
         },
-        mode: "onTouched",
+        mode: "onSubmit",
+        reValidateMode: "onSubmit",
     });
 
     const {
