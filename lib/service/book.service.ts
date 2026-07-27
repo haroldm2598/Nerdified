@@ -1,4 +1,4 @@
-import { IBook } from "@/types";
+import { CreateBook } from "@/types";
 import * as repository from "../repositories/book.repository";
 import { generateSlug } from "../utils";
 
@@ -6,7 +6,7 @@ export async function getBooks() {
     return repository.findAll();
 }
 
-export async function createBook(data: IBook) {
+export async function createBook(data: CreateBook) {
     const existingBook = await repository.findByTitle(data.title);
 
     if (existingBook) {
