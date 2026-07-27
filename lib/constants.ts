@@ -130,13 +130,13 @@ export const voiceOptions = {
         name: "Sarah",
         description: "Young female, American, soft & approachable",
     },
-};
+} as const;
 
 // Voice categories for the selector UI
 export const voiceCategories = {
     male: ["dave", "daniel", "chris"],
     female: ["rachel", "sarah"],
-};
+} as const;
 
 // Default voice
 export const DEFAULT_VOICE = "rachel";
@@ -145,6 +145,7 @@ export const voiceGroups = [
     {
         label: "Male Voices",
         options: voiceCategories.male.map((key) => ({
+            value: key,
             id: voiceOptions[key].id,
             title: voiceOptions[key].name,
             description: voiceOptions[key].description,
@@ -153,6 +154,7 @@ export const voiceGroups = [
     {
         label: "Female Voices",
         options: voiceCategories.female.map((key) => ({
+            value: key,
             id: voiceOptions[key].id,
             title: voiceOptions[key].name,
             description: voiceOptions[key].description,
