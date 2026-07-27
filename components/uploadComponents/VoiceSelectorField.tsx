@@ -42,11 +42,11 @@ const VoiceSelectorField = ({
                                     <div className="voice-selector-options flex-wrap gap-3">
                                         {group.options.map((option) => {
                                             const selected =
-                                                field.value === option.id;
+                                                field.value === option.value;
 
                                             return (
                                                 <label
-                                                    key={option.id}
+                                                    key={option.value}
                                                     className={cn(
                                                         "voice-selector-option w-full sm:w-auto",
                                                         selected
@@ -58,11 +58,11 @@ const VoiceSelectorField = ({
                                                         type="radio"
                                                         className="sr-only"
                                                         name="voice"
-                                                        value={option.id}
+                                                        value={option.value}
                                                         checked={selected}
                                                         onChange={() =>
                                                             field.onChange(
-                                                                option.id,
+                                                                option.value,
                                                             )
                                                         }
                                                     />
