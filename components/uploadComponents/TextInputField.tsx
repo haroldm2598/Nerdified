@@ -35,8 +35,10 @@ const TextInputField = ({
             name={name}
             render={({
                 field,
+                fieldState,
             }: {
                 field: ControllerRenderProps<UploadFormValues, typeof name>;
+                fieldState: { error?: { message?: string } };
             }) => (
                 <FormItem>
                     <FormLabel htmlFor={inputId}>{label}</FormLabel>
@@ -48,7 +50,9 @@ const TextInputField = ({
                             {...field}
                         />
                     </FormControl>
-                    <FormMessage>{errorMessage}</FormMessage>
+                    <FormMessage>
+                        {fieldState.error?.message ?? errorMessage}
+                    </FormMessage>
                 </FormItem>
             )}
         />

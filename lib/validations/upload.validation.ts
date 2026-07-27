@@ -20,8 +20,8 @@ export const UploadFormSchema = z.object({
         .refine((value) => !value || value?.type?.startsWith("image/"), {
             message: "Cover image must be an image file",
         }),
-    title: z.string().min(1, "Title is required"),
-    author: z.string().min(1, "Author name is required"),
+    title: z.string().trim().min(1, "Title is required"),
+    author: z.string().trim().min(1, "Author name is required"),
     voice: z.enum(["dave", "daniel", "chris", "rachel", "sarah"]),
 });
 
