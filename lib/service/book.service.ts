@@ -14,6 +14,11 @@ export async function createBook(data: CreateBook) {
     }
 
     const slug = generateSlug(data.title);
+    const createData = {
+        ...data,
+        coverURL: data.coverURL ?? "",
+        coverBlobKey: data.coverBlobKey ?? undefined,
+    };
 
-    return repository.create({ ...data, slug, totalSegments: 0 });
+    return repository.create({ ...createData, slug, totalSegments: 0 });
 }

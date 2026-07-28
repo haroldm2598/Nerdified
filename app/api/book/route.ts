@@ -1,5 +1,5 @@
 import * as response from "@/utils/api-response";
-import * as service from "@/lib/service/post.service";
+import * as service from "@/lib/service/book.service";
 import { UploadFormSchema } from "@/lib/validations/upload.validation";
 
 // export async function GET() {
@@ -14,9 +14,20 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         const validated = UploadFormSchema.parse(body);
-        // nag error dahil magkaiba yung nasa client zod validation at server side prisma.schema
-        // dahil IBook yung ginamit kong validation sa book.service instead na CreateBook dapat yung mag error naman yung prisma.schema
-        const bookCreated = await service.createBook(validated);
+
+        const createPayload = {
+            clerkId: "unknown",
+            title: validated.title,
+            author: validated.author,
+            persona: undefined,
+            fileURL: "",
+            fileBlobKey: "",
+            coverURL: validated.coverImage ? String(validated.coverImage) : "",
+            coverBlobKey: undefined,
+            fileSize: validated.pdfFile?.size ?? 0,
+        };
+
+        const bookCreated = await service.createBook(createPayload);
 
         return response.created(bookCreated);
     } catch (error) {
