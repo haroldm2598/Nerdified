@@ -24,11 +24,11 @@ const VoiceSelectorField = ({
     return (
         <FormField
             control={control}
-            name="voice"
+            name="persona"
             render={({
                 field,
             }: {
-                field: ControllerRenderProps<UploadFormValues, "voice">;
+                field: ControllerRenderProps<UploadFormValues, "persona">;
             }) => (
                 <FormItem>
                     <FormLabel>Choose Assistant Voice</FormLabel>

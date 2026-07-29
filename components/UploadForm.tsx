@@ -18,10 +18,14 @@ import {
     TextInputField,
     VoiceSelectorField,
 } from "./uploadComponents";
+import { useAuth } from "@clerk/nextjs";
+import { parsePDFFile } from "@/lib/utils";
+import { upload } from "@vercel/blob/client";
 
 const UploadForm = () => {
     const pdfInputRef = React.useRef<HTMLInputElement>(null);
     const coverInputRef = React.useRef<HTMLInputElement>(null);
+    const { userId } = useAuth();
 
     const form = useForm<UploadFormValues>({
         resolver: async (values) => {
@@ -59,7 +63,7 @@ const UploadForm = () => {
             coverImage: undefined,
             title: "",
             author: "",
-            voice: DEFAULT_VOICE,
+            persona: DEFAULT_VOICE,
         },
         mode: "onSubmit",
         reValidateMode: "onSubmit",
@@ -88,15 +92,94 @@ const UploadForm = () => {
     };
 
     const onSubmit = async (values: UploadFormValues) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log("Submitted book upload:", values);
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
+        // console.log("Submitted book upload:", values);
+
+        try {
+            const fileTitle = values.title.replace(/\s+/g, "-").toLowerCase();
+            const pdfFile = values.pdfFile;
+
+            const parsedPDF = await parsePDFFile(pdfFile);
+
+            if (parsedPDF.content.length === 0) {
+                console.error(
+                    "Failed to parse PDF. Please try again with a different file.",
+                );
+                return;
+            }
+
+            const uploadedPdfBlob = await upload(fileTitle, pdfFile, {
+                access: "public",
+                handleUploadUrl: "/api/upload",
+                contentType: "application/pdf",
+            });
+
+            let coverUrl: string;
+
+            if (values.coverImage) {
+                const coverFile = values.coverImage;
+                const uploadedCoverBlob = await upload(
+                    `${fileTitle}_cover.png`,
+                    coverFile,
+                    {
+                        access: "public",
+                        handleUploadUrl: "/api/upload",
+                        contentType: coverFile.type,
+                    },
+                );
+                coverUrl = uploadedCoverBlob.url;
+            } else {
+                const response = await fetch(parsedPDF.cover);
+                const blob = await response.blob();
+
+                const uploadedCoverBlob = await upload(
+                    `${fileTitle}_cover.png`,
+                    blob,
+                    {
+                        access: "public",
+                        handleUploadUrl: "/api/upload",
+                        contentType: "image/png",
+                    },
+                );
+                coverUrl = uploadedCoverBlob.url;
+            }
+
+            const res = await fetch("/api/book", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    clerkId: userId,
+                    title: values.title,
+                    author: values.author,
+                    persona: values.persona,
+                    fileURL: uploadedPdfBlob.url,
+                    fileBlobKey: uploadedPdfBlob.pathname,
+                    coverURL: coverUrl,
+                    // wala namn dapat tong coverBlobkey sa video
+                    // na fix ko na yung sa utils na pdf something yung dine nalang nag error para makapag pass ng client to db
+                    coverBlobKey: values.title,
+                    fileSize: pdfFile.size,
+                }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                // data.message comes from badRequest()/serverError() helpers
+                throw new Error(data.message || "Failed to upload book");
+            }
+            console.log("Book created", data);
+        } catch (error) {
+            console.error("Upload failed:", error);
+        }
     };
 
     const pdfErrorMessage = getFieldErrorMessage(errors.pdfFile);
     const coverErrorMessage = getFieldErrorMessage(errors.coverImage);
     const titleErrorMessage = getFieldErrorMessage(errors.title);
     const authorErrorMessage = getFieldErrorMessage(errors.author);
-    const voiceErrorMessage = getFieldErrorMessage(errors.voice);
+    const voiceErrorMessage = getFieldErrorMessage(errors.persona);
 
     return (
         <div className="new-book-wrapper">

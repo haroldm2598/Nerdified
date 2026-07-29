@@ -22,7 +22,7 @@ export const UploadFormSchema = z.object({
         }),
     title: z.string().trim().min(1, "Title is required"),
     author: z.string().trim().min(1, "Author name is required"),
-    voice: z.enum(["dave", "daniel", "chris", "rachel", "sarah"]),
+    persona: z.enum(["dave", "daniel", "chris", "rachel", "sarah"]),
 });
 
 export type UploadFormValues = z.infer<typeof UploadFormSchema>;
