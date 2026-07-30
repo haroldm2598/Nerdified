@@ -1,6 +1,7 @@
+import z from "zod";
 import * as response from "@/utils/api-response";
 import * as service from "@/lib/service/book.service";
-import { UploadFormSchema } from "@/lib/validations/upload.validation";
+import { CreateBookPayloadSchema } from "@/lib/validations/upload.validation";
 
 // export async function GET() {
 //     try {
@@ -13,24 +14,34 @@ import { UploadFormSchema } from "@/lib/validations/upload.validation";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const validated = UploadFormSchema.parse(body);
+        const validated = CreateBookPayloadSchema.parse(body);
 
         const createPayload = {
-            clerkId: "unknown",
+            clerkId: validated.clerkId ?? "unknown",
             title: validated.title,
             author: validated.author,
-            persona: undefined,
-            fileURL: "",
-            fileBlobKey: "",
-            coverURL: validated.coverImage ? String(validated.coverImage) : "",
-            coverBlobKey: undefined,
-            fileSize: validated.pdfFile?.size ?? 0,
+            persona: validated.persona,
+            fileURL: validated.fileURL,
+            fileBlobKey: validated.fileBlobKey,
+            coverURL: validated.coverURL ?? "",
+            coverBlobKey: validated.coverBlobKey,
+            fileSize: validated.fileSize,
         };
 
         const bookCreated = await service.createBook(createPayload);
+        const safeBookResponse = {
+            ...bookCreated,
+            fileSize: Number(bookCreated.fileSize),
+        };
 
-        return response.created(bookCreated);
+        return response.created(safeBookResponse);
     } catch (error) {
+        if (error instanceof z.ZodError) {
+            return response.badRequest(
+                error.issues.map((issue) => issue.message).join(", "),
+            );
+        }
+
         return response.serverError(
             error instanceof Error
                 ? error.message

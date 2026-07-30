@@ -18,6 +18,7 @@ export async function createBook(data: CreateBook) {
         ...data,
         coverURL: data.coverURL ?? "",
         coverBlobKey: data.coverBlobKey ?? undefined,
+        fileSize: Number(data.fileSize),
     };
 
     return repository.create({ ...createData, slug, totalSegments: 0 });
