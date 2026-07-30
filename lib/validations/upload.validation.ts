@@ -25,4 +25,16 @@ export const UploadFormSchema = z.object({
     persona: z.enum(["dave", "daniel", "chris", "rachel", "sarah"]),
 });
 
+export const CreateBookPayloadSchema = z.object({
+    clerkId: z.string().optional().default("unknown"),
+    title: z.string().trim().min(1, "Title is required"),
+    author: z.string().trim().min(1, "Author name is required"),
+    persona: z.enum(["dave", "daniel", "chris", "rachel", "sarah"]).optional(),
+    fileURL: z.string().trim().min(1, "File URL is required"),
+    fileBlobKey: z.string().trim().min(1, "File blob key is required"),
+    coverURL: z.string().optional(),
+    coverBlobKey: z.string().optional(),
+    fileSize: z.number().int().nonnegative(),
+});
+
 export type UploadFormValues = z.infer<typeof UploadFormSchema>;
