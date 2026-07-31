@@ -3,13 +3,25 @@ import * as response from "@/utils/api-response";
 import * as service from "@/lib/service/book.service";
 import { CreateBookPayloadSchema } from "@/lib/validations/upload.validation";
 
-// export async function GET() {
-//     try {
-//         const uploads = await
-//     } catch(error) {
+export async function GET() {
+    try {
+        const books = await service.getBooks();
 
-//     }
-// }
+        const serializedBooks = JSON.parse(
+            JSON.stringify(books, (_, value) =>
+                typeof value === "bigint" ? value.toString() : value,
+            ),
+        );
+
+        return response.ok(serializedBooks);
+    } catch (error) {
+        return response.serverError(
+            error instanceof Error
+                ? error.message
+                : "An internal server error occurred",
+        );
+    }
+}
 
 export async function POST(request: Request) {
     try {
