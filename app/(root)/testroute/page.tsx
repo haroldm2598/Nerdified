@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useFetchAPI } from "@/lib/api/useFetchApi";
 
 interface PostProps {
     id: string;
@@ -9,27 +8,11 @@ interface PostProps {
 }
 
 const page = () => {
-    const [posts, setPosts] = useState<PostProps[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(`/api/post`);
-            const post = await response.json();
-
-            setPosts(post);
-            console.log("From serverState:", post);
-        };
-
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        console.log("From useState:", posts);
-    }, [posts]);
+    const { data: posts } = useFetchAPI<PostProps[]>("/api/post");
 
     return (
         <div className="wrapper container">
-            {posts.map((post) => {
+            {posts?.map((post) => {
                 return (
                     <div key={post.id} className="flex items-center gap-2">
                         <h2 className="text-xl font-semibold">
