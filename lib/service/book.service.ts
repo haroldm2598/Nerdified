@@ -6,6 +6,10 @@ export async function getBooks() {
     return repository.findAll();
 }
 
+export async function getBookBySlug(slug: string) {
+    return repository.findBySlug(slug);
+}
+
 export async function createBook(data: CreateBook) {
     const existingBook = await repository.findByTitle(data.title);
 
