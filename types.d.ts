@@ -15,12 +15,12 @@ export interface IBook extends Document {
     title: string;
     slug: string;
     author: string;
-    persona?: string;
+    persona?: string | null;
     fileURL: string;
     fileBlobKey: string;
     coverURL: string;
-    coverBlobKey?: string;
-    fileSize: number;
+    coverBlobKey?: string | null;
+    fileSize: number | bigint;
     totalSegments: number;
     createdAt: Date;
     updatedAt: Date;
