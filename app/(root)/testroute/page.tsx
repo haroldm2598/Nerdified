@@ -1,5 +1,5 @@
 "use client";
-import { useFetchAPI } from "@/lib/api/useFetchApi";
+import { useFetchAPI } from "@/lib/hooks/useFetchApi";
 
 interface PostProps {
     id: string;

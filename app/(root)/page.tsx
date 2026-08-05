@@ -1,7 +1,7 @@
 "use client";
 import BookCard from "@/components/BookCard";
 import HeroSection from "@/components/HeroSection";
-import { useFetchAPI } from "@/lib/api/useFetchApi";
+import { useFetchAPI } from "@/lib/hooks/useFetchApi";
 import { sampleBooks } from "@/lib/constants";
 import { IBook } from "@/types";
 
