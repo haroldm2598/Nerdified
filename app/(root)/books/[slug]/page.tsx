@@ -9,6 +9,7 @@ interface SlugProps {
 
 export default async function Page({ params }: SlugProps) {
     const { slug } = await params;
+    // having an error if this uncomment code. find the issue
     // const { userId } = await auth();
 
     // if (!userId) {
