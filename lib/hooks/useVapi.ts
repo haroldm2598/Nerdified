@@ -50,9 +50,25 @@ export function useVapi(book: IBook) {
     // const remainingSeconds
     // const showTimeWarning
 
-    const start = async () => {};
+    const start = async () => {
+        // first thing i need to create an API Route for this voiceSession needs
+        if (!userId)
+            return setLimitError(
+                "User not authenticated. Please log in to start the session.",
+            );
+
+        setLimitError(null);
+        setStatus("connecting");
+
+        try {
+        } catch (e) {
+            console.error("Error starting call", e);
+            setStatus("idle");
+            setLimitError("Failed to start the session. Please try again.");
+        }
+    };
     const stop = async () => {};
-    const clearErros = () => {};
+    const clearErrors = () => {};
 
     return {
         status,
@@ -63,7 +79,7 @@ export function useVapi(book: IBook) {
         duration,
         start,
         stop,
-        clearErros,
+        clearErrors,
         // maxDurationSeconds, remainingSeconds, showTimeWarning
     };
 }
