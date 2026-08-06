@@ -21,7 +21,7 @@ function VapiControls({ book }: VapiControlsProps) {
         duration,
         start,
         stop,
-        clearErros,
+        clearErrors,
     } = useVapi(book);
     const voiceLabel = book.persona?.trim() ? book.persona : "Default";
 
