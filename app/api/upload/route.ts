@@ -1,7 +1,7 @@
 import * as response from "@/utils/api-response";
 import { handleUpload, HandleUploadBody } from "@vercel/blob/client";
 import { auth } from "@clerk/nextjs/server";
-import { MAX_FILE_SIZE } from "@/lib/constants";
+import { MAX_FILE_SIZE } from "@/lib/constant/constants";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {

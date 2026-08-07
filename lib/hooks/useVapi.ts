@@ -1,7 +1,7 @@
 import { IBook, Messages } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
-import { DEFAULT_VOICE } from "../constants";
+import { DEFAULT_VOICE } from "../constant/constants";
 
 export type CallStatus =
     | "idle"

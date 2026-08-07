@@ -1,6 +1,6 @@
 import { StartSessionResult } from "@/types";
 import * as repository from "../repositories/voice-session.repository";
-import { getCurrentBillingPeriodStart } from "../subscription-constants";
+import { getCurrentBillingPeriodStart } from "../constant/subscription-constants";
 
 export async function createVoiceSession(
     clerkId: string,
