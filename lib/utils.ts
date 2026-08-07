@@ -1,7 +1,7 @@
 import { TextSegment } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { DEFAULT_VOICE, voiceOptions } from "./constants";
+import { DEFAULT_VOICE, voiceOptions } from "./constant/constants";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

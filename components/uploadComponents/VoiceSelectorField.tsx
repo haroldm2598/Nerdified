@@ -9,7 +9,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { voiceGroups } from "@/lib/constants";
+import { voiceGroups } from "@/lib/constant/constants";
 import type { UploadFormValues } from "@/lib/validations/upload.validation";
 
 interface VoiceSelectorFieldProps {
