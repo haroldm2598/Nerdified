@@ -67,7 +67,9 @@ export function useVapi(book: IBook) {
             setLimitError("Failed to start the session. Please try again.");
         }
     };
+
     const stop = async () => {};
+
     const clearErrors = () => {};
 
     return {
