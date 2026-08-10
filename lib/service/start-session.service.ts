@@ -21,5 +21,6 @@ export async function createVoiceSession(
     return {
         success: true,
         sessionId: session.id,
+        // maxDurationMinutes: check.maxDurationMinutes
     };
 }
