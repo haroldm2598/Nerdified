@@ -20,6 +20,38 @@ export function create(data: Prisma.BookCreateInput) {
     return prisma.book.create({ data });
 }
 
+export function searchBookSegments(
+    bookId: string,
+    query: string,
+    segmentCount = 3,
+) {
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+        return [];
+    }
+
+    const take = Math.max(1, Math.min(segmentCount || 3, 10));
+
+    return prisma.bookSegment.findMany({
+        where: {
+            bookId,
+            content: {
+                contains: trimmedQuery,
+                mode: "insensitive",
+            },
+        },
+        orderBy: {
+            segmentIndex: "asc",
+        },
+        take,
+        select: {
+            content: true,
+            segmentIndex: true,
+        },
+    });
+}
+
 // for duplication checking
 export function findByTitle(title: string) {
     return prisma.book.findFirst({

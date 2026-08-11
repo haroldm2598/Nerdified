@@ -180,6 +180,10 @@ export function useVapi(book: IBook) {
                 }),
             });
 
+            const payload = await result
+                .json()
+                .catch(() => null as { sessionId?: string } | null);
+
             if (!result.ok) {
                 setLimitError(
                     "Failed to start the session in lib/hooks/useVapi. Please try again.",
@@ -188,8 +192,7 @@ export function useVapi(book: IBook) {
                 return;
             }
 
-            // gumagana naman kahit may error to find out mo nalang what cause the error is
-            sessionIdRef.current = result.sessionId || null;
+            sessionIdRef.current = payload?.sessionId ?? null;
 
             const firstMessage = `Hey, good to meet you! Quick question, before we dive in: have you actually read ${book.title} yet? Or are we starting fresh?`;
 
