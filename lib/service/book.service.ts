@@ -27,3 +27,15 @@ export async function createBook(data: CreateBook) {
 
     return repository.create({ ...createData, slug, totalSegments: 0 });
 }
+
+export async function searchBookSegments(
+    bookId: string,
+    query: string,
+    segmentCount = 3,
+) {
+    if (!bookId?.trim() || !query?.trim()) {
+        return [];
+    }
+
+    return repository.searchBookSegments(bookId, query, segmentCount);
+}
