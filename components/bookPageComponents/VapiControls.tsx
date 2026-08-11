@@ -49,8 +49,17 @@ function VapiControls({ book }: VapiControlsProps) {
                             onClick={isActive ? stop : start}
                             disabled={status === "connecting"}
                             type="button"
+                            aria-label={
+                                isActive
+                                    ? "Stop voice session"
+                                    : "Start voice session"
+                            }
+                            title={
+                                isActive
+                                    ? "Stop voice session"
+                                    : "Start voice session"
+                            }
                             className={`vapi-mic-btn shadow-md ${isActive ? "vapi-mic-btn-active" : "vapi-mic-btn-inactive bg-black"}`}
-                            aria-label="Start talking"
                         >
                             {isActive ? (
                                 <Mic className="size-5 text-white" />
