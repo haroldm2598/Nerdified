@@ -1,15 +1,37 @@
 import { StartSessionResult } from "@/types";
 import * as repository from "../repositories/voice-session.repository";
-import { getCurrentBillingPeriodStart } from "../constant/subscription-constants";
+import {
+    getCurrentBillingPeriodStart,
+    getPlanLimits,
+    type SubscriptionPlan,
+} from "../constant/subscription-constants";
 
 export async function createVoiceSession(
     clerkId: string,
     bookId: string,
+    plan: SubscriptionPlan,
 ): Promise<StartSessionResult> {
+    const billingPeriodStart = getCurrentBillingPeriodStart();
+    const limits = getPlanLimits(plan);
+
+    const sessionCount = await repository.countByClerkIdAndBillingPeriodStart(
+        clerkId,
+        billingPeriodStart,
+    );
+
+    if (
+        limits.maxSessionsPerMonth !== null &&
+        sessionCount >= limits.maxSessionsPerMonth
+    ) {
+        throw new Error(
+            `You have reached the ${limits.label} plan limit of ${limits.maxSessionsPerMonth} sessions this month. Upgrade to continue.`,
+        );
+    }
+
     const session = await repository.create({
         clerkId,
         startedAt: new Date(),
-        billingPeriodStart: getCurrentBillingPeriodStart(),
+        billingPeriodStart,
         durationSeconds: 0,
         book: {
             connect: {
@@ -21,6 +43,6 @@ export async function createVoiceSession(
     return {
         success: true,
         sessionId: session.id,
-        // maxDurationMinutes: check.maxDurationMinutes
+        maxDurationMinutes: limits.maxSessionMinutes,
     };
 }

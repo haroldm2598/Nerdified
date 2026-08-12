@@ -4,9 +4,13 @@ import * as React from "react";
 import {
     Controller,
     type Control,
+    type ControllerFieldState,
+    type ControllerRenderProps,
     type FieldPath,
+    type FieldPathValue,
     type FieldValues,
     type UseFormReturn,
+    type UseFormStateReturn,
 } from "react-hook-form";
 import { cn } from "@/lib/utils";
 
@@ -20,16 +24,20 @@ function Form<T extends FieldValues>({ className, ...props }: FormProps<T>) {
     return <form className={cn(className)} noValidate {...props} />;
 }
 
-function FormField<T extends FieldValues>({
+function FormField<T extends FieldValues, Name extends FieldPath<T>>({
     control,
     name,
     defaultValue,
     render,
 }: {
     control: Control<T>;
-    name: FieldPath<T>;
-    defaultValue?: unknown;
-    render: (props: any) => React.ReactNode;
+    name: Name;
+    defaultValue?: FieldPathValue<T, Name>;
+    render: (props: {
+        field: ControllerRenderProps<T, Name>;
+        fieldState: ControllerFieldState;
+        formState: UseFormStateReturn<T>;
+    }) => React.ReactElement;
 }) {
     return (
         <Controller
