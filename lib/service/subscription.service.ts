@@ -4,8 +4,7 @@ import { getPlanLimits } from "../constant/subscription-constants";
 import type { SubscriptionPlan } from "../constant/subscription-constants";
 
 export async function getServerSubscriptionPlan(): Promise<SubscriptionPlan> {
-    const user = await currentUser();
-    return getSubscriptionPlanFromUser(user);
+    return getSubscriptionPlanFromUser();
 }
 
 export async function getServerSubscriptionLimits() {

@@ -2,7 +2,7 @@ import z from "zod";
 import * as response from "@/utils/api-response";
 import * as service from "@/lib/service/book.service";
 import { CreateBookPayloadSchema } from "@/lib/validations/upload.validation";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSubscriptionPlanFromUser } from "@/lib/constant/subscription-utils";
 
 export async function GET() {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
         const body = await request.json();
         const validated = CreateBookPayloadSchema.parse(body);
-        const plan = getSubscriptionPlanFromUser(user);
+        const plan = await getSubscriptionPlanFromUser();
 
         const createPayload = {
             clerkId: user.id,

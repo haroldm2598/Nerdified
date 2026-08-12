@@ -1,15 +1,20 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { getSubscriptionPlanFromUser } from "@/lib/constant/subscription-utils";
+import { useAuth } from "@clerk/nextjs";
 import type { SubscriptionPlan } from "@/lib/constant/subscription-constants";
 
 export function useSubscriptionPlan() {
-    const { user, isLoaded, isSignedIn } = useUser();
+    const { isLoaded, isSignedIn, has } = useAuth();
 
-    const plan: SubscriptionPlan = user
-        ? getSubscriptionPlanFromUser(user)
-        : "free";
+    let plan: SubscriptionPlan = "free";
+
+    if (isSignedIn && has) {
+        if (has({ plan: "pro" })) {
+            plan = "pro";
+        } else if (has({ plan: "standard" })) {
+            plan = "standard";
+        }
+    }
 
     return {
         plan,

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
             return response.badRequest("bookId is required");
         }
 
-        const plan = getSubscriptionPlanFromUser(user);
+        const plan = await getSubscriptionPlanFromUser();
         const result = await service.createVoiceSession(user.id, bookId, plan);
         return response.created(result);
     } catch (error) {
