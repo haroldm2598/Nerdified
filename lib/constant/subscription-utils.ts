@@ -1,32 +1,25 @@
+import { auth } from "@clerk/nextjs/server";
 import { getPlanLimits, type SubscriptionPlan } from "./subscription-constants";
 
-export function hasSubscriptionPlan(
-    user: any,
-    plan: SubscriptionPlan,
-): boolean {
-    if (!user || typeof user.has !== "function") {
-        return false;
-    }
-
+export async function getSubscriptionPlanFromUser(): Promise<SubscriptionPlan> {
     try {
-        return Boolean(user.has("subscription", plan));
+        const { has } = await auth();
+
+        if (has({ plan: "pro" })) {
+            return "pro";
+        }
+
+        if (has({ plan: "standard" })) {
+            return "standard";
+        }
+
+        return "free";
     } catch {
-        return false;
+        return "free";
     }
 }
 
-export function getSubscriptionPlanFromUser(user: any): SubscriptionPlan {
-    if (hasSubscriptionPlan(user, "pro")) {
-        return "pro";
-    }
-
-    if (hasSubscriptionPlan(user, "standard")) {
-        return "standard";
-    }
-
-    return "free";
-}
-
-export function getSubscriptionLimitsFromUser(user: any) {
-    return getPlanLimits(getSubscriptionPlanFromUser(user));
+export async function getSubscriptionLimitsFromUser() {
+    const plan = await getSubscriptionPlanFromUser();
+    return getPlanLimits(plan);
 }
