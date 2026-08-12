@@ -13,6 +13,7 @@ import {
 
 const navItems = [
     { label: "Library", href: "/" },
+    { label: "Subscriptions", href: "/subscriptions" },
     { label: "Add New", href: "/books/new" },
 ];
 

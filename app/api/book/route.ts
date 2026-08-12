@@ -2,6 +2,8 @@ import z from "zod";
 import * as response from "@/utils/api-response";
 import * as service from "@/lib/service/book.service";
 import { CreateBookPayloadSchema } from "@/lib/validations/upload.validation";
+import { currentUser } from "@clerk/nextjs/server";
+import { getSubscriptionPlanFromUser } from "@/lib/constant/subscription-utils";
 
 export async function GET() {
     try {
@@ -25,11 +27,20 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
+        const user = await currentUser();
+
+        if (!user?.id) {
+            return response.badRequest(
+                "Unauthorized: Please sign in to upload a book.",
+            );
+        }
+
         const body = await request.json();
         const validated = CreateBookPayloadSchema.parse(body);
+        const plan = getSubscriptionPlanFromUser(user);
 
         const createPayload = {
-            clerkId: validated.clerkId ?? "unknown",
+            clerkId: user.id,
             title: validated.title,
             author: validated.author,
             persona: validated.persona,
@@ -40,7 +51,7 @@ export async function POST(request: Request) {
             fileSize: validated.fileSize,
         };
 
-        const bookCreated = await service.createBook(createPayload);
+        const bookCreated = await service.createBook(createPayload, plan);
         const safeBookResponse = {
             ...bookCreated,
             fileSize: Number(bookCreated.fileSize),

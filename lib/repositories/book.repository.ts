@@ -20,6 +20,14 @@ export function create(data: Prisma.BookCreateInput) {
     return prisma.book.create({ data });
 }
 
+export function countByClerkId(clerkId: string) {
+    return prisma.book.count({
+        where: {
+            clerkId,
+        },
+    });
+}
+
 export function searchBookSegments(
     bookId: string,
     query: string,

@@ -1,6 +1,10 @@
 import { CreateBook } from "@/types";
 import * as repository from "../repositories/book.repository";
 import { generateSlug } from "../utils";
+import {
+    getPlanLimits,
+    type SubscriptionPlan,
+} from "../constant/subscription-constants";
 
 export async function getBooks() {
     return repository.findAll();
@@ -10,11 +14,20 @@ export async function getBookBySlug(slug: string) {
     return repository.findBySlug(slug);
 }
 
-export async function createBook(data: CreateBook) {
+export async function createBook(data: CreateBook, plan: SubscriptionPlan) {
     const existingBook = await repository.findByTitle(data.title);
 
     if (existingBook) {
         throw new Error("A book with this title already exists.");
+    }
+
+    const limits = getPlanLimits(plan);
+    const bookCount = await repository.countByClerkId(data.clerkId);
+
+    if (bookCount >= limits.maxBooks) {
+        throw new Error(
+            `You have reached the ${limits.label} plan limit of ${limits.maxBooks} book uploads. Upgrade to add more books.`,
+        );
     }
 
     const slug = generateSlug(data.title);

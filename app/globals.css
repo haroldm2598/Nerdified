@@ -256,6 +256,26 @@
         @apply hover:rounded-lg font-medium text-lg;
     }
 
+    .pricing-panel {
+        @apply space-y-8;
+    }
+
+    .pricing-panel-inner {
+        @apply rounded-3xl border border-[var(--border-subtle)] bg-[var(--accent-light)] p-8;
+    }
+
+    .subscription-current-plan {
+        @apply rounded-3xl border border-[var(--border-subtle)] bg-white p-4 text-sm text-[var(--text-secondary)];
+    }
+
+    .subscription-card {
+        @apply rounded-[1.75rem] border border-[var(--border-subtle)] bg-white p-8 shadow-[var(--shadow-soft)];
+    }
+
+    .subscription-card-pill {
+        @apply inline-flex items-center rounded-full bg-[var(--accent-light)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--text-secondary)];
+    }
+
     /* ===========================================
      DESIGN SYSTEM FOUNDATION
      =========================================== */
