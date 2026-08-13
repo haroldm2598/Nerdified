@@ -9,7 +9,7 @@ export default function Home() {
     const { data: books } = useFetchAPI<IBook[]>("/api/book");
 
     return (
-        <section className="min-h-screen bg-[var(--bg-primary)] py-10">
+        <section className="min-h-screen bg-(--bg-primary) py-10">
             <div className="wrapper space-y-16">
                 <HeroSection />
 
