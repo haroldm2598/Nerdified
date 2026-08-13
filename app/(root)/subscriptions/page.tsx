@@ -19,15 +19,15 @@ export default function SubscriptionsPage() {
                 </div>
 
                 <div className="pricing-panel space-y-8">
-                    <div className="pricing-panel-inner rounded-3xl border border-[var(--border-subtle)] bg-[var(--accent-light)] p-8">
-                        <p className="text-sm uppercase tracking-[0.24em] text-[var(--text-secondary)]">
+                    <div className="pricing-panel-inner rounded-3xl border border-(--border-subtle) border-(--accent-light)] p-8">
+                        <p className="text-sm uppercase tracking-[0.24em] text-(--text-secondary)">
                             Clerk Billing
                         </p>
-                        <h2 className="mt-2 text-3xl font-bold text-[var(--text-primary)]">
+                        <h2 className="mt-2 text-3xl font-bold text-(--text-primary)">
                             Manage your plan and billing.
                         </h2>
                         <div className="subscription-current-plan mt-6">
-                            <p className="text-sm text-[var(--text-secondary)]">
+                            <p className="text-sm text-(--text-secondary)">
                                 {isLoading
                                     ? "Checking your plan..."
                                     : isSignedIn

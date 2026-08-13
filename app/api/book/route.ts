@@ -2,7 +2,7 @@ import z from "zod";
 import * as response from "@/utils/api-response";
 import * as service from "@/lib/service/book.service";
 import { CreateBookPayloadSchema } from "@/lib/validations/upload.validation";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { getSubscriptionPlanFromUser } from "@/lib/constant/subscription-utils";
 
 export async function GET() {
@@ -27,9 +27,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const user = await currentUser();
+        const { userId } = await auth();
 
-        if (!user?.id) {
+        if (!userId) {
             return response.badRequest(
                 "Unauthorized: Please sign in to upload a book.",
             );
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         const plan = await getSubscriptionPlanFromUser();
 
         const createPayload = {
-            clerkId: user.id,
+            clerkId: userId,
             title: validated.title,
             author: validated.author,
             persona: validated.persona,
