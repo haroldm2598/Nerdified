@@ -19,6 +19,12 @@ export function create(data: Prisma.BookCreateInput) {
     return prisma.book.create({ data });
 }
 
+export function deleteBySlug(slug: string) {
+    return prisma.book.delete({
+        where: { slug },
+    });
+}
+
 export function countByClerkId(clerkId: string) {
     return prisma.book.count({
         where: {
