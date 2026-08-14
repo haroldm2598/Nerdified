@@ -72,3 +72,35 @@ export async function POST(request: Request) {
         );
     }
 }
+
+export async function DELETE(request: Request) {
+    try {
+        const { userId } = await auth();
+
+        if (!userId) {
+            return response.badRequest(
+                "Unauthorized: Please sign in to delete this book.",
+            );
+        }
+
+        const body = await request.json();
+        const slug = typeof body?.slug === "string" ? body.slug.trim() : "";
+
+        if (!slug) {
+            return response.badRequest("Book slug is required.");
+        }
+
+        await service.deleteBook(slug, userId);
+
+        return response.ok({
+            success: true,
+            message: "Book deleted successfully.",
+        });
+    } catch (error) {
+        return response.serverError(
+            error instanceof Error
+                ? error.message
+                : "An internal server error occurred",
+        );
+    }
+}

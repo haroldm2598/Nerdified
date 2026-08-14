@@ -41,6 +41,20 @@ export async function createBook(data: CreateBook, plan: SubscriptionPlan) {
     return repository.create({ ...createData, slug, totalSegments: 0 });
 }
 
+export async function deleteBook(slug: string, clerkId: string) {
+    const existingBook = await repository.findBySlug(slug);
+
+    if (!existingBook) {
+        throw new Error("Book not found.");
+    }
+
+    if (existingBook.clerkId !== clerkId) {
+        throw new Error("You are not allowed to delete this book.");
+    }
+
+    return repository.deleteBySlug(slug);
+}
+
 export async function searchBookSegments(
     bookId: string,
     query: string,
