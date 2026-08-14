@@ -56,11 +56,14 @@ export default defineConfig({
 - im using vapi.ai as my voice ai needs in the app
 - i did use a API route handler even thought i can use actions but for this app i want to dive more in API route hanlder than a server actions directly using like prismaORM
 - the way i use API Route handler is this inorder to connect
+
+```typescript
   -- /lib/repositories/post.repository.ts
   -- /lib/services/post.service.ts
   -- /app/api/post/route.ts
   -- /lib/hooks/useFetchPost.ts
   --- inorder to reduce reduduncy calling
+```
 
 ===================================================
 
@@ -90,16 +93,16 @@ export default nextConfig;
 - this is the way of commit message for git/github changes
 
 ```typescript
-feat	New functionality	feat: add user authentication
-fix	Bug fix	fix: resolve incorrect tax calculation
+samples
+feat	    New functionality	                            feat: add user authentication
+fix	        Bug fix	                                        fix: resolve incorrect tax calculation
 refactor	Change code structure without changing behavior	refactor: simplify auth middleware
-docs	Documentation changes	docs: add API authentication guide
-test	Add/change tests	test: add validation tests for signup
-chore	Maintenance that isn't really product code	chore: update project dependencies
-style	Formatting/style changes with no logic change	style: format user controller
-perf	Performance improvement	perf: optimize database query
-build	Build system/dependency changes	build: configure production webpack
-ci	CI/CD changes	ci: add automated test workflow
-revert	Revert a previous commit	revert: revert user authentication
-
+docs	    Documentation changes	                        docs: add API authentication guide
+test	    Add/change tests	                            test: add validation tests for signup
+chore	    Maintenance that isn't really product code	    chore: update project dependencies
+style	    Formatting/style changes with no logic change	style: format user controller
+perf	    Performance improvement	                        perf: optimize database query
+build	    Build system/dependency changes	                build: configure production webpack
+ci	        CI/CD changes	                                ci: add automated test workflow
+revert	    Revert a previous commit	                    revert: revert user authentication
 ```
