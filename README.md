@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Techstack
 
-## Getting Started
+- Nextjs
+- Typescript
+- PrismaORM
+- Supabase(Postgresql purpose)
+- Clerk Auth
+- Shadcn/ui
+- Vapi ai(voice ai)
+- Vercel Blob
+- Vercel(deployment also for blob)
 
-First, run the development server:
+===================================================
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- this is the way we should use a function for page and components
+
+```typescript
+    export default function PAGE/COMPONENT() {
+        return (
+            <div>sample</div>
+        )
+    }
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- for using a resuable libraries or custom
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```typescript
+    export const useLib = () => {
+        return {
+            .......
+        }
+    }
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- inorder to make the supabase and prismaORM connected may need to use this in prisma version 7 as well using the .env not the .env.local
 
-## Learn More
+```typescript
+import "dotenv/config";
+import { defineConfig, env } from "prisma/config";
 
-To learn more about Next.js, take a look at the following resources:
+export default defineConfig({
+    schema: "prisma/schema.prisma",
+    migrations: {
+        path: "prisma/migrations",
+    },
+    datasource: {
+        url: env("DIRECT_URL"),
+        // shadowDatabaseUrl: env("SHADOW_DATABASE_URL"),
+    },
+});
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+===================================================
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- inorder to make wakeup the dabatase supabase may need to awake in supabase using my own account only last 7days if not using
+- im using vapi.ai as my voice ai needs in the app
+- i did use a API route handler even thought i can use actions but for this app i want to dive more in API route hanlder than a server actions directly using like prismaORM
+- the way i use API Route handler is this inorder to connect
+  -- /lib/repositories/post.repository.ts
+  -- /lib/services/post.service.ts
+  -- /app/api/post/route.ts
+  -- /lib/hooks/useFetchPost.ts
+  --- inorder to reduce reduduncy calling
 
-## Deploy on Vercel
+===================================================
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- if you want to use vercel blob to store image for supabase may need this setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```typescript
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+    /* config options here */
+    images: {
+        remotePatterns: [
+            { protocol: "https", hostname: "sample.com" },
+            {
+                protocol: "https",
+                hostname: "inside the supabase table or vercel blob",
+            },
+        ],
+    },
+};
+
+export default nextConfig;
+```
+
+===================================================
+
+- this is the way of commit message for git/github changes
+
+```typescript
+feat	New functionality	feat: add user authentication
+fix	Bug fix	fix: resolve incorrect tax calculation
+refactor	Change code structure without changing behavior	refactor: simplify auth middleware
+docs	Documentation changes	docs: add API authentication guide
+test	Add/change tests	test: add validation tests for signup
+chore	Maintenance that isn't really product code	chore: update project dependencies
+style	Formatting/style changes with no logic change	style: format user controller
+perf	Performance improvement	perf: optimize database query
+build	Build system/dependency changes	build: configure production webpack
+ci	CI/CD changes	ci: add automated test workflow
+revert	Revert a previous commit	revert: revert user authentication
+
+```
