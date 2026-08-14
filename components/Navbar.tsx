@@ -14,7 +14,7 @@ import {
 const navItems = [
     { label: "Library", href: "/" },
     { label: "Subscriptions", href: "/subscriptions" },
-    { label: "Add New", href: "/books/new" },
+    { label: "Add New", href: "/books/new", requiresAuth: true },
 ];
 
 const Navbar = () => {
@@ -35,14 +35,13 @@ const Navbar = () => {
                 </Link>
 
                 <nav className="w-fit flex gap-7.5 items-center">
-                    {navItems.map(({ label, href }) => {
+                    {navItems.map(({ label, href, requiresAuth }) => {
                         const isActive =
                             pathName === href ||
                             (href !== "/" && pathName.startsWith(href));
 
-                        return (
+                        const link = (
                             <Link
-                                key={label}
                                 href={href}
                                 className={cn(
                                     "nav-link-base",
@@ -53,6 +52,13 @@ const Navbar = () => {
                             >
                                 {label}
                             </Link>
+                        );
+                        return requiresAuth ? (
+                            <Show key={label} when="signed-in">
+                                {link}
+                            </Show>
+                        ) : (
+                            <div key={label}>{link}</div>
                         );
                     })}
 
