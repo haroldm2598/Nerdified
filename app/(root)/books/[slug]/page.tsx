@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import BookDetailsPage from "@/components/bookPageComponents/BookDetailsPage";
+import BookDetailsPage from "@/components/bookSlugComponents/BookDetailsPage";
 import * as service from "@/lib/service/book.service";
 
 interface SlugProps {
@@ -9,12 +9,11 @@ interface SlugProps {
 
 export default async function Page({ params }: SlugProps) {
     const { slug } = await params;
-    // having an error if this uncomment code. find the issue
-    // const { userId } = await auth();
+    const { userId } = await auth();
 
-    // if (!userId) {
-    //     redirect("/");
-    // }
+    if (!userId) {
+        redirect("/");
+    }
 
     const book = await service.getBookBySlug(slug);
 

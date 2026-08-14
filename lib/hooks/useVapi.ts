@@ -186,7 +186,7 @@ export function useVapi(book: IBook) {
 
             if (!result.ok) {
                 setLimitError(
-                    "Failed to start the session in lib/hooks/useVapi. Please try again.",
+                    "Session limit reached. Please upgrade your plan.",
                 );
                 setStatus("idle");
                 return;
