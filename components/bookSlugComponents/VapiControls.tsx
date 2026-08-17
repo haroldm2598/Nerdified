@@ -9,6 +9,7 @@ import useVapi from "@/lib/hooks/useVapi";
 import { IBook } from "@/types";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { useDeleteBookMutation } from "@/lib/react-query/books";
 import Transcript from "./Transcript";
 
 interface VapiControlsProps {
@@ -19,6 +20,7 @@ function VapiControls({ book }: VapiControlsProps) {
     const router = useRouter();
     const { toast } = useToast();
     const [isDeleting, setIsDeleting] = useState(false);
+    const deleteBookMutation = useDeleteBookMutation();
 
     const {
         status,
@@ -37,19 +39,7 @@ function VapiControls({ book }: VapiControlsProps) {
         setIsDeleting(true);
 
         try {
-            const response = await fetch("/api/book", {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ slug: book.slug }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Failed to delete book.");
-            }
+            await deleteBookMutation.mutateAsync(book.slug);
 
             toast({
                 title: "Book deleted",
@@ -70,7 +60,7 @@ function VapiControls({ book }: VapiControlsProps) {
                 variant: "destructive",
                 duration: 4000,
             });
-
+        } finally {
             setIsDeleting(false);
         }
     };

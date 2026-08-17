@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Serif, Mona_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import QueryProvider from "@/components/QueryProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 const ibmPlexSerif = IBM_Plex_Serif({
@@ -36,9 +37,11 @@ export default function RootLayout({
         >
             <body className="min-h-full flex flex-col">
                 <ClerkProvider>
-                    <Navbar />
-                    {children}
-                    <Toaster />
+                    <QueryProvider>
+                        <Navbar />
+                        {children}
+                        <Toaster />
+                    </QueryProvider>
                 </ClerkProvider>
             </body>
         </html>

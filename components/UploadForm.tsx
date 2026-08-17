@@ -22,12 +22,14 @@ import { useAuth } from "@clerk/nextjs";
 import { parsePDFFile } from "@/lib/utils";
 import { upload } from "@vercel/blob/client";
 import { useRouter } from "next/navigation";
+import { useCreateBookMutation } from "@/lib/react-query/books";
 
 const UploadForm = () => {
     const pdfInputRef = React.useRef<HTMLInputElement>(null);
     const coverInputRef = React.useRef<HTMLInputElement>(null);
     const { userId } = useAuth();
     const router = useRouter();
+    const createBookMutation = useCreateBookMutation();
 
     const form = useForm<UploadFormValues>({
         resolver: async (values) => {
@@ -150,33 +152,17 @@ const UploadForm = () => {
                 coverUrl = uploadedCoverBlob.url;
             }
 
-            const res = await fetch("/api/book", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    clerkId: userId ?? "unknown",
-                    title: values.title,
-                    author: values.author,
-                    persona: values.persona,
-                    fileURL: uploadedPdfBlob.url,
-                    fileBlobKey: uploadedPdfBlob.pathname,
-                    coverURL: coverUrl,
-                    // wala namn dapat tong coverBlobkey sa video
-                    // na fix ko na yung sa utils na pdf something yung dine nalang nag error para makapag pass ng client to db
-                    // nag cause ng error need munang i deploy sa vercel para makakuha ng BLOG API keys
-                    coverBlobKey: values.title,
-                    fileSize: pdfFile.size,
-                }),
+            await createBookMutation.mutateAsync({
+                clerkId: userId ?? "unknown",
+                title: values.title,
+                author: values.author,
+                persona: values.persona,
+                fileURL: uploadedPdfBlob.url,
+                fileBlobKey: uploadedPdfBlob.pathname,
+                coverURL: coverUrl,
+                coverBlobKey: values.title,
+                fileSize: pdfFile.size,
             });
-
-            const data = await res.json();
-            if (!res.ok) {
-                // data.message comes from badRequest()/serverError() helpers
-                throw new Error(data.message || "Failed to upload book");
-            }
-            console.log("Book created", data);
 
             router.push("/");
         } catch (error) {
